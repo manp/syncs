@@ -1,0 +1,24 @@
+{
+  "name": "syncs",
+  "version": "0.0.1",
+  "description": "Real-Time web framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manp/syncs.git"
+  },
+  "keywords": [
+    "RealTime",
+    "NodeJs",
+    "WebSocket"
+  ],
+  "author": "Mostafa Alinaghi-pour",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/manp/syncs/issues"
+  },
+  "homepage": "https://github.com/manp/syncs#readme"
+}
