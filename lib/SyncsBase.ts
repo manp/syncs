@@ -156,6 +156,7 @@ export class SyncsBase<T extends SyncsClientBase> extends EventEmitter{
             client = existClient;
             this.emit('re-connection', client);
         } else {
+            client.online=true;
             this.clients.set(client.socketId, client);
             this.emit('connection', client);
         }
@@ -277,6 +278,7 @@ export class SyncsBase<T extends SyncsClientBase> extends EventEmitter{
             client.online = true;
         } else {
             this.setNewSocketId(client);
+
         }
         this.onHandShacked(client);
     }
