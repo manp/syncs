@@ -1,5 +1,9 @@
 [![Syncs Logo](https://www.imageupload.co.uk/images/2017/04/24/logo.png)](https://www.npmjs.com/package/syncs)
 
+[![npm](https://img.shields.io/npm/v/syncs.svg)]()
+[![node](https://img.shields.io/node/v/syncs.svg)]()
+[![npm](https://img.shields.io/npm/dt/syncs.svg)]()
+
 # Syncs
 A JavaScript Library for Real-Time Web Applications
 
