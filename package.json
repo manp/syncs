@@ -1,24 +1,39 @@
 {
   "name": "syncs",
   "version": "0.0.1",
-  "description": "Real-Time web framework",
+  "description": "Real-Time Web framework using WebSocket",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/manp/syncs.git"
   },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "keywords": [
     "RealTime",
-    "NodeJs",
-    "WebSocket"
+    "WebSocket",
+    "Shared Object",
+    "Publish",
+    "Subscribe",
+    "RMI"
   ],
   "author": "Mostafa Alinaghi-pour",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/manp/syncs/issues"
   },
-  "homepage": "https://github.com/manp/syncs#readme"
+  "homepage": "https://github.com/manp/syncs#readme",
+  "dependencies": {
+    "@types/node": "^7.0.13",
+    "@types/ws": "0.0.40",
+    "syncs-browser": "^1",
+    "ws": "^2.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^2.2.2"
+  }
 }
