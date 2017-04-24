@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/syncs.svg)](https://www.npmjs.com/package/syncs)
 [![node](https://img.shields.io/node/v/syncs.svg)](https://nodejs.org/en/download/)
 [![npm](https://img.shields.io/npm/dt/syncs.svg)](https://www.npmjs.com/package/syncs)
-
+[![dependencies Status](https://david-dm.org/manp/syncs/status.svg)](https://david-dm.org/manp/syncs)
 # Syncs
 A JavaScript Library for Real-Time Web Applications
 
