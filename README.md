@@ -68,6 +68,7 @@ It's also possible to enable debug mode using `io.enableDebugMode()` and disable
 Syncs clients are developed to run on both Browser and NodeJs :
 + [Syncs Client for Browser](https://github.com/manp/syncs-browser)
 + [Syncs Client for NodeJs](https://github.com/manp/syncs-node)
++ [Syncs Client for Java](https://github.com/manp/syncs-java)
 
 The rest of this documentation uses _Browser Client Script_.
 
