@@ -4,6 +4,8 @@
 [![node](https://img.shields.io/node/v/syncs.svg)](https://nodejs.org/en/download/)
 [![npm](https://img.shields.io/npm/dt/syncs.svg)](https://www.npmjs.com/package/syncs)
 [![dependencies Status](https://david-dm.org/manp/syncs/status.svg)](https://david-dm.org/manp/syncs)
+[![Build Status](https://travis-ci.org/manp/syncs.svg?branch=master)](https://travis-ci.org/manp/syncs)
+
 # Syncs
 A JavaScript Library for Real-Time Web Applications
 
@@ -65,7 +67,7 @@ let io=new SyncsServer(server,{
 It's also possible to enable debug mode using `io.enableDebugMode()` and disable it with `io.disableDebugMode()` methods.
 
 ### Client Initialization
-Syncs clients are developed to run on both Browser and NodeJs :
+Syncs clients are developed to run on most common platforms :
 + [Syncs Client for Browser](https://github.com/manp/syncs-browser)
 + [Syncs Client for NodeJs](https://github.com/manp/syncs-node)
 + [Syncs Client for Java](https://github.com/manp/syncs-java)
