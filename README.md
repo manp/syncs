@@ -69,6 +69,8 @@ Syncs clients are developed to run on both Browser and NodeJs :
 + [Syncs Client for Browser](https://github.com/manp/syncs-browser)
 + [Syncs Client for NodeJs](https://github.com/manp/syncs-node)
 + [Syncs Client for Java](https://github.com/manp/syncs-java)
++ [Syncs Client for Swift](https://github.com/manp/syncs-swift)
+
 
 The rest of this documentation uses _Browser Client Script_.
 
