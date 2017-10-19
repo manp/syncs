@@ -41,7 +41,7 @@ import syncs from "syncs";
 
 let app=express();
 let server=http.createServer(app);
-let io=new syncs(server);
+let io= syncs(server);
 
 server.listen(8080);
 ```
