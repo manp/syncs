@@ -55,7 +55,7 @@ Sync module contains `SyncServer` class which acts as WebSocket server. With Typ
     + `path : string` : real-time serving path. default value is `/syncs`.
     + `closeTimeout : number`: times in millisecond that server waits after client disconnect, then it will remove the client from list of clients and groups. default value is `10000`.
     + `debug : boolean`: enables debug mode to log input and output commands. default value is `false`.
-    
+
 
 ```typescript
 let io=new SyncsServer(server,{
@@ -77,7 +77,7 @@ Syncs clients are developed to run on most common platforms :
 The rest of this documentation uses _Browser Client Script_.
 
  There is two way to setup the [Browser Client Script](https://github.com/manp/syncs-browser).
-  
+
  1. Developers can download javascripts file from this [link](https://github.com/manp/syncs-browser/releases/tag/1.0) and add the `syncs.js` file to assets directory.
  2. On server side it's possible to access client script from `Syncs` instance:
     ```typescript
@@ -85,7 +85,7 @@ The rest of this documentation uses _Browser Client Script_.
             res.send(io.clientScript);
         })
     ```
-    
+
  After serving client script, developers should include it in html page and create an instance of `Syncs` class.
  ```html
     <!doctype html>
@@ -95,7 +95,7 @@ The rest of this documentation uses _Browser Client Script_.
          <script src="syncs.js"></script>        
     </head>
         <body>
-          
+
         </body>
         <script>
             let io=new Syncs();
@@ -117,7 +117,7 @@ using `onConnection` on server side developers can notify about client connectio
 ```typescript
     //io as Syncs instance on server side
     io.onConnection(client=>{
-        
+
     })
 ```
 By any reason if client disconnects from Syncs Server, server waits for client connection. By using `onClientDisconnect` method of `SyncsServer` instance or `onDisconnect` method of `SyncsClient` instance developers can handle disconnect event.
@@ -157,12 +157,12 @@ On client side when the connection is established and hand shaking process compl
 Developers can handle _disconnect_ and _close_ event with `onDisconnect` and `onClose`  method.
 ```typescript
     io.onDisconnect(()=>{
-            
+
     })
 ```
 ```typescript
     io.onClose(()=>{
-            
+
     })
 ```
 
@@ -174,7 +174,7 @@ Also it's possible to disconnect from server using `disconnect` method.
 
 ## Client Groups on Server Side
 It's possible to manage clients in groups. `SyncsGroup` class is responsible to manage group of clients. Using groups developers can send messages and access abstraction functions on group of clients.
- 
+
  `group` method of `SyncsServer` instance will return named `SyncsGroup` instance.
  ```typescript
     let guestGroup=io.group('guests');
@@ -249,7 +249,7 @@ Developers should add extra properties to distinguish between messages.
 
 ### 2. Publish and Subscribe Abstraction Layer
  With a Publish and Subscribe solution developers normally subscribe to data using a string identifier. This is normally called a Channel, Topic or Subject.
- 
+
  Both server and client can publish or subscribe to event.
  `publish` method is accessible from `SyncsServer`, `SyncsGroup` and `SyncsClient` instances on server side.
  ```typescript
@@ -290,12 +290,12 @@ function sendPublicMessage(message:string){
 ```
 
 It's possible to disable subscription to event using `unSubscribe` method.
- 
- 
+
+
  ### 3. Shared Data Abstraction Layer
 Syncs provides Shared Data functionality in form of variable sharing. Shared variables can be accessible in tree level: _Global Level_, _Group Level_ and _Client Level_.
 Global Level and Group Level shared objects are readonly by client. Client Level shared object are write-able by client but server can make readonly client level shared object.
-  
+
 ```typescript
 //server side
 // reporting online users to all clients
@@ -406,3 +406,25 @@ cliet.remote.getUserVote(
 
 Remote side can return another Promise object if the result is not accessible yet.
 
+It's also possible to interfere remote method calling using `onRMI` method on server side. This method has two argument. `name` the name of remote method or regular expression format of string and the `callback` which is handler of interfering.
+
+Return value from this callback will handle next steps of remote method invocation as follow:
+ * if developer returns nothing next handler invokes and if there is no more handler the target method will be called.
+ * if developer returns a specific value (synchronously) then the RMI result will be the returned value.
+ * if developer returns a promise then the result of resolve or reject methods will handles next steps.
+
+ ```typescript
+ // check authentication on before method call
+io.onRMI('admin.*',(client,name,args)=>{
+    return new Promise((res,rej)=>{
+        //authenticate
+        if(authenticated){
+            rej();
+        }else{
+            res({error:"user is not authenticated"});
+        }
+    });
+})
+
+
+```
