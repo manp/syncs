@@ -77,14 +77,14 @@ export declare class SyncsServer extends SyncsBase<SyncsClient> {
      * @param {any[]} args
      * @returns {Promise<any>}
      */
-    private interfereRMI(name, args);
+    private interfereRMI(name, args, client);
     /**
      * get list of callbacks which can be interfered in this call
      * @param {string} name
      * @returns {Function[]}
      */
     private getInterferersFunctions(name);
-    onRMI(name: string, callback: (name: string, args: any[]) => void | any | Promise<any>): void;
+    onRMI(name: string, callback: (client: SyncsClient, name: string, args: any[]) => void | any | Promise<any>): void;
     /**
      * using this method,developer can declare remote invokable functions
      * @returns {any}
