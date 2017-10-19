@@ -14,6 +14,7 @@ export declare class SyncsServer extends SyncsBase<SyncsClient> {
     private sharedObjects;
     private functionProxy;
     private rmiFunctions;
+    private rmiInterferers;
     /**
      * @constructor
      * @param {Server} server
@@ -70,6 +71,20 @@ export declare class SyncsServer extends SyncsBase<SyncsClient> {
      * @param {SyncsClient} client
      */
     private handleRMICommand(command, client);
+    /**
+     * starts the process of interfering
+     * @param {string} name
+     * @param {any[]} args
+     * @returns {Promise<any>}
+     */
+    private interfereRMI(name, args);
+    /**
+     * get list of callbacks which can be interfered in this call
+     * @param {string} name
+     * @returns {Function[]}
+     */
+    private getInterferersFunctions(name);
+    onRMI(name: string, callback: (name: string, args: any[]) => void | any | Promise<any>): void;
     /**
      * using this method,developer can declare remote invokable functions
      * @returns {any}
