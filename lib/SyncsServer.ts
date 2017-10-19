@@ -147,7 +147,7 @@ export class SyncsServer extends SyncsBase<SyncsClient>{
      * @param {SyncsClient} client
      */
     private  handleRMICommand(command:any,client:SyncsClientBase){
-        this.interfereRMI(command.name,command.args).then(intfResult=>{
+        this.interfereRMI(command.name,command.args,client as SyncsClient).then(intfResult=>{
 
             if(intfResult==undefined){
                 if(command.name in this.functions){
@@ -167,10 +167,7 @@ export class SyncsServer extends SyncsBase<SyncsClient>{
             }else{
                 this.sendRmiResultCommand(intfResult,null,command.id,client);
             }
-
-
-
-        })
+        });
 
     }
     /**
@@ -179,7 +176,7 @@ export class SyncsServer extends SyncsBase<SyncsClient>{
      * @param {any[]} args
      * @returns {Promise<any>}
      */
-    private interfereRMI(name:string,args:any[]):Promise<any>{
+    private interfereRMI(name:string,args:any[],client:SyncsClient):Promise<any>{
         let interferes=this.getInterferersFunctions(name);
 
         return new Promise((resolve,reject)=>{
@@ -190,7 +187,7 @@ export class SyncsServer extends SyncsBase<SyncsClient>{
                     resolve(undefined);
                     return;
                 }
-                let result=callback(name,args);
+                let result=callback(client,name,args);
                 if(result==undefined){
                     checkNext();
                 }else{
@@ -227,7 +224,7 @@ export class SyncsServer extends SyncsBase<SyncsClient>{
         return result;
     }
 
-    public onRMI(name:string,callback:(name:string,args:any[])=>void|any|Promise<any>){
+    public onRMI(name:string,callback:(client:SyncsClient,name:string,args:any[])=>void|any|Promise<any>){
         this.rmiInterferers.push({name:name,callback:callback});
     }
     /**
