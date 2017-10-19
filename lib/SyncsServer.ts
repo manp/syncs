@@ -4,6 +4,7 @@ import {Server} from "http";
 import {SyncsClientBase} from "./SyncsClientBase";
 import {SyncsSharedObject} from "./SyncsSharedObject";
 import {SyncsClient} from "./SyncsClient";
+import {type} from "os";
 
 
 /**
@@ -16,6 +17,8 @@ export class SyncsServer extends SyncsBase<SyncsClient>{
     private sharedObjects:Map<string,SyncsSharedObject>=new Map();
     private functionProxy:any;
     private rmiFunctions:any={};
+    private rmiInterferers:{name:string,callback:Function}[]=[];
+
 
 
     /**
@@ -144,23 +147,89 @@ export class SyncsServer extends SyncsBase<SyncsClient>{
      * @param {SyncsClient} client
      */
     private  handleRMICommand(command:any,client:SyncsClientBase){
-        if(command.name in this.functions){
-            let result=this.functions[command.name].call(client,...command.args);
-            if(result instanceof Promise){
-                result.then(promiseResult=>{
-                    this.sendRmiResultCommand(promiseResult,null,command.id,client);
-                }).catch(error=>{
-                    this.sendRmiResultCommand(null,'function error',command.id,client);
-                })
+        this.interfereRMI(command.name,command.args).then(intfResult=>{
+
+            if(intfResult==undefined){
+                if(command.name in this.functions){
+                    let result=this.functions[command.name].call(client,...command.args);
+                    if(result instanceof Promise){
+                        result.then(promiseResult=>{
+                            this.sendRmiResultCommand(promiseResult,null,command.id,client);
+                        }).catch(error=>{
+                            this.sendRmiResultCommand(null,'function error',command.id,client);
+                        })
+                    }else{
+                        this.sendRmiResultCommand(result,null,command.id,client);
+                    }
+                }else{
+                    this.sendRmiResultCommand(null,'undefined',command.id,client);
+                }
             }else{
-                this.sendRmiResultCommand(result,null,command.id,client);
+                this.sendRmiResultCommand(intfResult,null,command.id,client);
             }
-        }else{
-            this.sendRmiResultCommand(null,'undefined',command.id,client);
-        }
+
+
+
+        })
+
+    }
+    /**
+     * starts the process of interfering
+     * @param {string} name
+     * @param {any[]} args
+     * @returns {Promise<any>}
+     */
+    private interfereRMI(name:string,args:any[]):Promise<any>{
+        let interferes=this.getInterferersFunctions(name);
+
+        return new Promise((resolve,reject)=>{
+            checkNext();
+            function checkNext(){
+                let callback=interferes.shift();
+                if(callback==undefined){
+                    resolve(undefined);
+                    return;
+                }
+                let result=callback(name,args);
+                if(result==undefined){
+                    checkNext();
+                }else{
+                    Promise.resolve(result).then(res=>{
+                        if(res==undefined){
+                            checkNext();
+                        }else{
+                            resolve(res);
+                        }
+                    },()=>checkNext());
+                }
+
+
+
+            }
+        })
+
+
+
     }
 
+    /**
+     * get list of callbacks which can be interfered in this call
+     * @param {string} name
+     * @returns {Function[]}
+     */
+    private getInterferersFunctions(name:string):Function[]{
+        let result:Function[]=[];
+        for(let intf of this.rmiInterferers){
+            if(new RegExp(intf.name).test(name)){
+                result.push(intf.callback);
+            }
+        }
+        return result;
+    }
 
+    public onRMI(name:string,callback:(name:string,args:any[])=>void|any|Promise<any>){
+        this.rmiInterferers.push({name:name,callback:callback});
+    }
     /**
      * using this method,developer can declare remote invokable functions
      * @returns {any}
